@@ -17,6 +17,26 @@ con.connect((err) => {
 	else console.log("Database connection failed");
 });
 
+app.post("/search", (req, res) => {
+	const product_name = req.body.product_name;
+	const sql = "SELECT * FROM products WHERE product_name LIKE '%" + product_name + "%'";
+	con.query(sql, [product_name], (err, rows, fields) => {
+		if(!err) res.status(200).send(rows)
+	})
+})
+
+app.post("/add", (req, res) => {
+	const product_name = req.body.product_name;
+	const product_price = req.body.product_price;
+	const product_rating = req.body.product_rating;
+	const seller_id = req.body.seller_id;
+
+	const sql = "INSERT INTO products (product_name, product_price, product_rating, seller_id, product_status) VALUES (?, ?, ?, ?, 'unsold')";
+	con.query(sql, [product_name, product_price, product_rating, seller_id], (err, rows, fields) => {
+		if(!err) res.status(200).send("successfull")
+	})
+})
+
 app.get("/", (req, res) => {
 	const sql = "SELECT * FROM products";
 	con.query(sql, (err, rows, fields) => {
@@ -24,5 +44,7 @@ app.get("/", (req, res) => {
 		else res.status(500).send(err);
 	});
 });
+
+//app.listen(8080, () => console.log(`Hello world app listening on port ${8080}!`))
 
 exports.products = app;
