@@ -55,7 +55,7 @@ app.post("/orders", (req, res) => {
 	});
 });
 
-app.get("/", (req, res) => {
+app.get("/orders", (req, res) => {
 	const sql = "SELECT * FROM orders";
 	con.query(sql, (err, rows, fields) => {
 		if (!err) res.status(200).send(rows);
