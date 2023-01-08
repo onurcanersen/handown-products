@@ -26,6 +26,15 @@ app.post("/search", (req, res) => {
 	});
 });
 
+app.post("/searchByUser", (req, res) => {
+	const id = req.body.id;
+	const sql =
+		"SELECT * FROM products WHERE seller_id = ?";
+	con.query(sql, [id], (err, rows, fields) => {
+		if (!err) res.status(200).send(rows);
+	});
+});
+
 app.post("/add", (req, res) => {
 	const product_name = req.body.product_name;
 	const product_price = req.body.product_price;
